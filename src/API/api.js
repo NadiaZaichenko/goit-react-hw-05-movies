@@ -1,0 +1,52 @@
+import axios from 'axios';
+import getImagePosterPath from './defaultImg';
+
+const API_KEY =  '8969e643fd094287d471f08caa30017f';
+const BASE_URL = 'https://api.themoviedb.org/3/';
+
+export async function getTrendingMovies(page,controller) {
+  const responce = await axios.get(`${BASE_URL}trending/movie/day?api_key=${API_KEY}&page=${page}`,  { signal: controller.signal });
+
+  const movies = responce.data.results.map(({ id, title, poster_path}) => {return {id, title, posterPath: getImagePosterPath(poster_path)}});
+
+  return {movies, totalPages: responce.data.total_pages};
+}
+
+export async function getMovieByQuery(query, page=1, controller) {
+    const responce = await axios.get(`${BASE_URL}search/movie?api_key=${API_KEY}&query=${query}&page=${page}`,  { signal: controller.signal });
+
+    const movies = responce.data.results.map(({id, title, poster_path })=> {
+        return {id, title, posterPath: getImagePosterPath(poster_path), }
+    })
+
+    return{ movies, totalPages: responce.data.total_pages,
+    totalResults: responce.data.total_results};
+};
+
+export async function getMovieDetails (movieId, controller) {
+    const responce = await axios.get(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`, { signal: controller.signal});
+    const { title, poster_path, overview, genres, vote_average, release_date } =
+    responce.data;
+
+    return {
+        title,
+        posterPath: getImagePosterPath(poster_path),
+        overview,
+        genres: genres.map(genre => genre.name).join(', '),
+        vote: vote_average.toFixed(1),
+        year: release_date.slice(0, 4),
+      };
+};
+
+export async function getMoviesCast (movieId, controller) {
+    const responce = await axios.get(`${BASE_URL}movie/${movieId}/credits?api_key=${API_KEY}`,{ signal: controller.signal});
+    const actors = responce.data.cast.map(({id, name, profile_path, character}) => 
+    {return {id, name, profilePath: getImagePosterPath(profile_path), character}});
+    return actors; 
+};
+
+export async function getMovieRewies(movieId, controller) {
+    const responce = await axios.get(`${BASE_URL}movie/${movieId}/reviews?api_key=${API_KEY}`,{ signal: controller.signal});
+    const reviews = responce.data.results.map(({id, author,content}) => {return {id, author, content}});
+    return reviews;
+}
