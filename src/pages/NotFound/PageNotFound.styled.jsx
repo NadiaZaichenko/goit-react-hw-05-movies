@@ -12,14 +12,15 @@ align-items: center;
 width: 100px;
 height: 40px;
 text-decoration: none;
-background-color: navy;
-color: yellow;
+background-color: blue
+;
+color: #FFFFFF;
 border-radius: 10px;
 transition: color 250ms linear, background-color 250ms linear;
 &:hover,
 &:focus-visible {
-  background-color: yellow;
-  color: navy;
+  background-color: #FFFFFF;
+  color: blue;
 }
 `;
 export const Message = styled.h1`
