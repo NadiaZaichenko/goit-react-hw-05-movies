@@ -9,6 +9,8 @@ const SearchForm = ({onSubmit}) => {
         },
         onSubmit: values => {
             onSubmit(values.value);
+            localStorage.setItem()
+            // formik.resetForm();
           },
       })
 
