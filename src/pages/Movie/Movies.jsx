@@ -7,15 +7,14 @@ import { Main } from "./Movie.styled";
 import SearchForm from "components/SearchForm/SearchFrom";
 import MoviesGallery from "components/MovieGallery/MovieGallery";
 import Loader from "components/Loader/Loader";
-import Pagination from "components/Pagination/Pagination";
+
 
 
 const Movie = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState(searchParams.get('query'));
     const [movies, setMovies] = useState([]);
-    const [status, setStatus] = useState('idle');
-    const [totalPages, setTotalPages] = useState(0);
+    const [status, setStatus] = useState('idle');;
     const [notification, setNotification] = useState({ type: '', message: '' }); 
     const [page, setPage] = useState(searchParams.get('page'));
 
@@ -27,7 +26,7 @@ const Movie = () => {
         async function addMovieByQuery () {
             setStatus('pending');
             try{
-                const {movies, totalPages, totalResults} = await getMovieByQuery(query, page, abortController);
+                const {movies, totalResults} = await getMovieByQuery(query, page, abortController);
                 if(totalResults === 0) {
                     setNotification({
                         type: 'error',
@@ -37,7 +36,7 @@ const Movie = () => {
                     setQuery(null);
                 };
             setMovies(movies);
-            setTotalPages(totalPages);
+
             setStatus('resolved')
             }
             catch (error){
@@ -95,22 +94,11 @@ const Movie = () => {
 
     }
 
-    const changePage = currentPage => {
-        setSearchParams({query: query, page: currentPage});
-        setPage(currentPage);
-    };
 
     return (<Main>
         <SearchForm onSubmit={handleSubmit}/>
         {status === 'pending' && <Loader/>}
         {status === 'resolved' && <MoviesGallery movies={movies}/>}
-        {status === 'resolved' && totalPages > 1 && 
-        <Pagination
-            page={page}
-            totalPages={totalPages}
-            changePage={changePage}
-            query={query}
-        />}
     </Main>
 
     )
