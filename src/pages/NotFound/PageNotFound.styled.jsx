@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 
 export const Main = styled.div`
 display: flex;
+padding: 15px 15px;
 `;
 
 export const BackLink = styled(Link)`
@@ -12,8 +13,7 @@ align-items: center;
 width: 100px;
 height: 40px;
 text-decoration: none;
-background-color: blue
-;
+background-color: blue;
 color: #FFFFFF;
 border-radius: 10px;
 transition: color 250ms linear, background-color 250ms linear;
@@ -24,5 +24,8 @@ transition: color 250ms linear, background-color 250ms linear;
 }
 `;
 export const Message = styled.h1`
+padding-top: 60px;
+margin-left: auto;
+margin-right: auto;
 font-size: 34px;
 `

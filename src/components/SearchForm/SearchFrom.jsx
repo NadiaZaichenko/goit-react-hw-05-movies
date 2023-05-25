@@ -9,7 +9,6 @@ const SearchForm = ({onSubmit}) => {
         },
         onSubmit: values => {
             onSubmit(values.value);
-            formik.resetForm();
           },
       })
 
